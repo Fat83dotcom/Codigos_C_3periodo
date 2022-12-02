@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+
+int main(int argc, char const *argv[]){
+    
+    int numero = 98399, *p = &numero;
+    float pi = 3.1415;
+    printf("%X\n", numero); // Impreme um número inteiro em hexadecimal
+    printf("%p\n", p); // Imprime o endereço para onde o ponteiro p aponta
+    printf("%i\n", *p); //Imprime o conteudo do endereço apontado por p
+    printf("%p\n", &p); // IMprime o endereço do ponteiro na memoria
+    printf("%.3e\n", pi); // Imprime um numero em notação cientifica com 3 casas decimais
+    printf("%0.3f\n", pi); // Imprime um numero de ponto flutuante com 3 casas decimais
+    // printf("%-5D\n", pi); não deu certo
+    return 0;
+}
+#include <stdio.h>
+#include <stdio_ext.h>
+
+
+int main(int argc, char const *argv[]){
+    FILE *pArquivo, *pArquivoSalvadorLeiuras;
+    int caracter;
+
+    if (argc != 2){
+        printf("Sintaxe: \n\n%s Arquivo\n\n", argv[0]);
+        return 0;
+    }
+
+    pArquivo = fopen(argv[1], "r");
+    pArquivoSalvadorLeiuras = fopen("salvadorArquivos.txt", "a+");
+
+    if (pArquivo == NULL){
+        printf("Não foi possivel abrir o arquivo: %s\n", argv[1]);
+        return 1;
+    }
+    if (pArquivoSalvadorLeiuras == NULL){
+        printf("Arquivo salvador nao pode ser aberto.");
+        return 1;
+    }
+    
+    while ((caracter = fgetc(pArquivo)) != EOF){
+        putchar(caracter);
+        fputc(caracter, pArquivoSalvadorLeiuras);
+
+    }
+    fclose(pArquivo);
+    fclose(pArquivoSalvadorLeiuras);
+    
+    return 2;
+}
+{
+    "C_Cpp.autocompleteAddParentheses": true,
+    "files.associations": {
+        "*.js": "javascript",
+        "stdio_ext.h": "c",
+        "stdio.h": "c",
+        "new": "c",
+        "floatn.h": "c"
+    },
+}
