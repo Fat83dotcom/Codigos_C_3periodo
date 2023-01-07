@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdio_ext.h>
 
-#define tamMaximo 10
+#define tamMaximo 3
 typedef int TIPOCHAVE;
 
 typedef struct Registro{
     TIPOCHAVE chave;
-    char *nome[50];
-    char *idade[3];
+    char nome[50];
+    char idade[3];
 }Registro;
 
 typedef struct Lista{
@@ -28,7 +29,7 @@ void mostrarItens( Lista *lista){
     for (int i = 0; i < lista->index; i++){
         printf("Numero Identificador: %d\n", lista->A[i].chave);
         printf("Nome: %s\n", lista->A[i].nome);
-        printf("Idade: %s\n\n", lista->A[i].idade);
+        printf("Idade: %s\n", lista->A[i].idade);
     }
     printf("Fim da lista.\n");
 }
@@ -58,6 +59,14 @@ int inserirItemLista(Lista *lista, Registro reg, int posicaoInsercao){
     return 1;
 }
 
+int inserirFinalLista(Lista *lista, Registro reg){
+    if ((lista->index == tamMaximo)){
+        return -1;
+    }
+    lista->A[lista->index] = reg;
+    lista->index++;
+    return 1;
+}
 int excluirItemLista(Lista *lista, TIPOCHAVE chaveExclusao){
     int posicao = buscaSequencial(lista, chaveExclusao);
     if (posicao == -1){
@@ -75,8 +84,28 @@ void reinicializar(Lista *lista){
 }
 
 int main(int argc, char const *argv[]){
-    
-    
+    Lista pessoas;
+    Lista *pPessoa = &pessoas;
+    Registro rebeceDados;
+
+    inicializarLista(pPessoa);
+
+    do {
+        int flag;
+        printf("Digite o identificador único: ");
+        scanf("%d", &rebeceDados.chave);
+        printf("Digite o nome: ");
+        __fpurge(stdin);
+        fgets(rebeceDados.nome, 50, stdin);
+        printf("Digite a idade: ");
+        __fpurge(stdin);
+        fgets(rebeceDados.idade, 3, stdin);
+        (inserirFinalLista(pPessoa, rebeceDados) == 1) ? printf("Registrado com Sucesso.\n") : printf("Lista Cheia.\n");
+        printf("Deseja inserir outro registro?(1: sim / 0: não) ");
+        scanf("%d", &flag);
+        if (flag == 0) break;
+    } while (1);
+    mostrarItens(pPessoa);
     
     return 0;
 }
