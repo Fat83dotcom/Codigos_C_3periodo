@@ -1,8 +1,4 @@
-78, fernando, 34
-65, fernanda, 45
-451, fernando, 47
-89, fernando, 74
-75, nunes, 12
-34, fernando, 75
-10, luiz, 78
-54, fernando, 41
+1457 fernando mendes 40
+3748 kiko freitas 50
+1 Fernando Mendes 32
+8542 Juarex Oliveira 90

@@ -3,17 +3,19 @@
 #include <stdio_ext.h>
 #include <string.h>
 
-#define tamMaximo 3
+#define MAXIMO 3
+#define PATH_ARQUIVO "dadosSalvos.txt"
 typedef int TIPOCHAVE;
 
 typedef struct Registro{
     TIPOCHAVE chave;
-    char nome[50];
+    char nome[30];
+    char sobreNome[30];
     char idade[3];
 }Registro;
 
 typedef struct Lista{
-    Registro A[tamMaximo];
+    Registro A[MAXIMO];
     int index;
 }Lista;
 
@@ -30,6 +32,7 @@ void mostrarItens( Lista *lista){
     for (int i = 0; i < lista->index; i++){
         printf("Numero Identificador: %d\n", lista->A[i].chave);
         printf("Nome: %s\n", lista->A[i].nome);
+        printf("Sobrenome: %s\n", lista->A[i].sobreNome);
         printf("Idade: %s\n", lista->A[i].idade);
     }
     printf("Fim da lista.\n");
@@ -49,7 +52,7 @@ int buscaSequencial(Lista *lista, TIPOCHAVE chaveBuscada){
 }
 
 int inserirItemLista(Lista *lista, Registro *reg, int posicaoInsercao){
-    if ((posicaoInsercao < 0) || (lista->index == tamMaximo) || (posicaoInsercao > lista->index)) {
+    if ((posicaoInsercao < 0) || (lista->index == MAXIMO) || (posicaoInsercao > lista->index)) {
         return 0;
     }
     for (int i = lista->index; i > posicaoInsercao; i--){
@@ -61,7 +64,7 @@ int inserirItemLista(Lista *lista, Registro *reg, int posicaoInsercao){
 }
 
 int inserirFinalLista(Lista *lista, Registro *reg){
-    if ((lista->index == tamMaximo)){
+    if ((lista->index == MAXIMO)){
         return -1;
     }
     lista->A[lista->index] = *reg;
@@ -91,7 +94,10 @@ void cadastrarDados(Lista *lista, Registro *reg){
         scanf("%d", &reg->chave);
         printf("Digite o nome: ");
         __fpurge(stdin);
-        fgets(reg->nome, 50, stdin);
+        fgets(reg->nome, 30, stdin);
+        printf("Digite o sobrenome: ");
+        __fpurge(stdin);
+        fgets(reg->sobreNome, 30, stdin);
         printf("Digite a idade: ");
         __fpurge(stdin);
         fgets(reg->idade, 3, stdin);
@@ -113,17 +119,32 @@ void eliminarEnter(char *str){
 
 int gravarDadosArquivo(Lista *lista){
     FILE *arquivo;
-    arquivo = fopen("dadosSalvos.txt", "a");
+    arquivo = fopen(PATH_ARQUIVO, "a");
     if (arquivo == NULL){
         return -1;
     }
     for (int i = 0; i < lista->index; i++){
         eliminarEnter(lista->A[i].nome);
+        eliminarEnter(lista->A[i].sobreNome);
         eliminarEnter(lista->A[i].idade);
-        fprintf(arquivo, "%d, %s, %s\n", lista->A[i].chave, lista->A[i].nome, lista->A[i].idade);
+        fprintf(arquivo, "%d %s %s %s\n",
+            lista->A[i].chave, lista->A[i].nome,
+            lista->A[i].sobreNome, lista->A[i].idade
+        );
     }
     fclose(arquivo);
     return 1;
+}
+
+void lerDadosArquivo(){
+    FILE *arquivo;
+    char id[6], nome[30], sobreNome[30], idade[3];
+    arquivo = fopen(PATH_ARQUIVO, "r");
+    rewind(arquivo);
+    while (fscanf(arquivo, "%s %s %s %s", id, nome, sobreNome, idade) != EOF){
+        printf("%s %s %s %s\n", id, nome, sobreNome, idade);
+    }
+    fclose(arquivo);
 }
 
 int main(int argc, char const *argv[]){
@@ -133,7 +154,7 @@ int main(int argc, char const *argv[]){
     cadastrarDados(pPessoa, pRecebeDados);
     mostrarItens(pPessoa);
     gravarDadosArquivo(pPessoa);
+    lerDadosArquivo();
     inicializarLista(pPessoa);
-    
     return 0;
 }
