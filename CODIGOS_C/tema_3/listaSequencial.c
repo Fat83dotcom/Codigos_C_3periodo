@@ -15,7 +15,7 @@ typedef struct Registro{
 }Registro;
 
 typedef struct Lista{
-    Registro A[MAXIMO];
+    Registro A[MAXIMO + 1];
     int index;
 }Lista;
 
@@ -51,6 +51,34 @@ int buscaSequencial(Lista *lista, TIPOCHAVE chaveBuscada){
     return -1;
 }
 
+int buscaSentinela(Lista *lista, TIPOCHAVE chave){
+    int i = 0;
+    lista->A[lista->index].chave = chave;
+    while (lista->A[i].chave != chave){
+        i++;
+    }
+    if (i == lista->index){
+        return -1;
+    }
+    else{
+        return i;
+    }
+}
+
+int inserirOrdenadoLista(Lista *lista, Registro reg){
+    if (lista->index >= MAXIMO){
+        return 0;
+    }
+    int posicao = lista->index;
+    while (posicao > 0 && lista->A[posicao - 1].chave > reg.chave){
+        lista->A[posicao] = lista->A[posicao - 1];
+        posicao--;
+    }
+    lista->A[posicao] = reg;
+    lista->index++;
+    return 1;
+} 
+
 int inserirItemLista(Lista *lista, Registro *reg, int posicaoInsercao){
     if ((posicaoInsercao < 0) || (lista->index == MAXIMO) || (posicaoInsercao > lista->index)) {
         return 0;
@@ -71,6 +99,7 @@ int inserirFinalLista(Lista *lista, Registro *reg){
     lista->index++;
     return 1;
 }
+
 int excluirItemLista(Lista *lista, TIPOCHAVE chaveExclusao){
     int posicao = buscaSequencial(lista, chaveExclusao);
     if (posicao == -1){
