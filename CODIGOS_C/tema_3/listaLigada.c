@@ -159,6 +159,7 @@ int main(int argc, char const *argv[]){
     Registro reg, *pReg = & reg;
     inicializacaoLista(pLista);
     cadastrarDados(pLista, pReg);
+    printf("%d\n", tamanho(pLista));
     exibirLista(pLista);
 
     return 0;
