@@ -128,6 +128,20 @@ void reinicializar(Lista *lista){
     lista->inicio = NULL;
 }
 
+void inserirDadosLista(Lista *lista, Registro *reg){
+    do {
+        int flag;
+        printf("Digite o identificador único: ");
+        scanf("%d", &reg->chave);
+        printf("Digite o nome: ");
+        __fpurge(stdin);
+        fgets(reg->nome, 30, stdin);
+        (insercaoOrdenada(lista, reg) == 1) ? printf("Registrado com Sucesso.\n") : printf("Pilha Cheia.\n");
+        printf("Deseja inserir outro registro?(1: sim / 0: não) ");
+        scanf("%d", &flag);
+        if (flag == 0) break;
+    } while (1);
+}
 int main(int argc, char const *argv[]){
     
     return 0;
