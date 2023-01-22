@@ -2,20 +2,27 @@
 #include <stdlib.h>
 #include <time.h>
 
+
 void bubbleSort(int *vetor, int tamanhoVetor){
-    int i, j, aux;
-    for (i = tamanhoVetor - 1; i > 0; i--){
-        for (j = 0; j < i; j++){
-            if (vetor[j] > vetor[j + 1]){
-                aux = vetor[j];
-                vetor[j] = vetor[j + 1];
-                vetor[j + 1] = aux;
-            }
-        }
-    }
+	int troca = 1, i = 0, aux;
+	while (troca){
+		troca = 0;
+		while (i < tamanhoVetor - 1){
+			if (vetor[i] > vetor[i + 1])
+			{
+				aux = vetor[i];
+				vetor[i] = vetor[i + 1];
+				vetor[i + 1] = aux;
+				troca = 1;
+			}
+			i++;
+		}
+		i = 0;
+	}
 }
 
 int main(int argc, char const *argv[]){
+    
     const int tamanhoVetor = 50000;
     int vetor[tamanhoVetor];
     srand(time(NULL));
@@ -29,6 +36,5 @@ int main(int argc, char const *argv[]){
     for (int i = 0; i < tamanhoVetor; i++){
         printf("%d\n", vetor[i]);
     }
-    
     return 0;
 }
