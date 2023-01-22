@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+typedef struct Temporizador{
+    clock_t inicio;
+    clock_t fim;
+}Temporizador;
+
 void bubbleSort(int *vetor, int tamanhoVetor){
     int i, j, aux;
     for (i = tamanhoVetor - 1; i > 0; i--){
@@ -51,56 +56,47 @@ void selectionSort(int *vetor, int tamanhoVetor){
     }
 }
 
-typedef struct Temporizador{
-    clock_t inicio;
-    clock_t fim;
-}Temporizador;
+void preencimentoVetor(int *vetor, int tamanhoVetor, int rangeDosNumeros){
+    Temporizador vet;
+    vet.inicio = clock();
+    for (unsigned long i = 0; i < tamanhoVetor; i++){
+        vetor[i] = rand() % rangeDosNumeros;
+    }
+    vet.fim = clock();
+    printf("O preenchimento de vetor durou %.5f segundos.\n", ((double)(vet.fim - vet.inicio)) / CLOCKS_PER_SEC);
+}
+
+void executorFuncoes(void funcao(int*, int), int *vetor, int tamanhoVetor, char *nomeFuncao){
+    Temporizador temp;
+    temp.inicio = clock();
+    funcao(vetor, tamanhoVetor);
+    temp.fim = clock();
+    printf("O algoritmo %s foi executado em %.5f segundos.\n", nomeFuncao, ((double)(temp.fim - temp.inicio)) / CLOCKS_PER_SEC);
+}
+
 
 int main(int argc, char const *argv[]){
     
-    Temporizador bubble, selection, insertion, vet;
+    void (*pBubble)(int*, int) = &bubbleSort;
+    void (*pInsertion)(int*, int) = &insertionSort;
+    void (*pSelection)(int*, int) = &selectionSort;
 
-    const unsigned long tamanhoVetor = 500000;
-    int vetor[tamanhoVetor];
+    const unsigned long tamanhoVetor = 50000;
+    int vetor[tamanhoVetor], rangeNumeros = 10000;
     srand(time(NULL));
-    printf("O vetor contém %d elementos aleatórios.\n", tamanhoVetor);
+    printf("O vetor contém %ld elementos aleatórios.\n", tamanhoVetor);
 
-    vet.inicio = clock();
-    for (unsigned long i = 0; i < tamanhoVetor; i++){
-        vetor[i] = rand() % 100000;
-    }
-    vet.fim = clock();
-    printf("O preenchimento de vetor durou %.5f segundos.\n", ((double)(vet.fim - vet.inicio)) / CLOCKS_PER_SEC);
-
+    preencimentoVetor(vetor, tamanhoVetor, rangeNumeros);
     
-    bubble.inicio = clock();
-    bubbleSort(vetor, tamanhoVetor);
-    bubble.fim = clock();
-    printf("O algoritmo BubbleSort foi executado em %.5f segundos.\n", ((double)(bubble.fim - bubble.inicio)) / CLOCKS_PER_SEC);
+    executorFuncoes(pBubble, vetor, tamanhoVetor, "BubbleSort");
 
-    vet.inicio = clock();
-    for (unsigned long i = 0; i < tamanhoVetor; i++){
-        vetor[i] = rand() % 100000;
-    }
-    vet.fim = clock();
-    printf("O preenchimento de vetor durou %.5f segundos.\n", ((double)(vet.fim - vet.inicio)) / CLOCKS_PER_SEC);
+    preencimentoVetor(vetor, tamanhoVetor, rangeNumeros);
 
-    insertion.inicio = clock();
-    insertionSort(vetor, tamanhoVetor);
-    insertion.fim = clock();
-    printf("O algoritmo InsertionSort foi executado em %.5f segundos.\n", ((double)(insertion.fim - insertion.inicio)) / CLOCKS_PER_SEC);
+    executorFuncoes(pInsertion, vetor, tamanhoVetor, "Insertion Sort");
 
-    vet.inicio = clock();
-    for (unsigned long i = 0; i < tamanhoVetor; i++){
-        vetor[i] = rand() % 100000;
-    }
-    vet.fim = clock();
-    printf("O preenchimento de vetor durou %.5f segundos.\n", ((double)(vet.fim - vet.inicio)) / CLOCKS_PER_SEC);
+    preencimentoVetor(vetor, tamanhoVetor, rangeNumeros);
 
-    selection.inicio = clock();
-    selectionSort(vetor, tamanhoVetor);
-    selection.fim = clock();
-    printf("O algoritmo SelectionSort foi executado em %.5f segundos.\n", ((double)(selection.fim - selection.inicio)) / CLOCKS_PER_SEC);
+    executorFuncoes(pSelection, vetor, tamanhoVetor, "Selection Sort");
 
     return 0;
 }
