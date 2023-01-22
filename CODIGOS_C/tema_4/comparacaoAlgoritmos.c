@@ -56,7 +56,7 @@ void selectionSort(int *vetor, int tamanhoVetor){
     }
 }
 
-void preencimentoVetor(int *vetor, int tamanhoVetor, int rangeDosNumeros){
+void preenchedorVetor(int *vetor, int tamanhoVetor, int rangeDosNumeros){
     Temporizador vet;
     vet.inicio = clock();
     for (unsigned long i = 0; i < tamanhoVetor; i++){
@@ -81,22 +81,22 @@ int main(int argc, char const *argv[]){
     void (*pInsertion)(int*, int) = &insertionSort;
     void (*pSelection)(int*, int) = &selectionSort;
 
-    const unsigned long tamanhoVetor = 50000;
+    const unsigned long tamanhoVetor = 500000;
     int vetor[tamanhoVetor], rangeNumeros = 10000;
     srand(time(NULL));
     printf("O vetor contém %ld elementos aleatórios.\n", tamanhoVetor);
 
-    preencimentoVetor(vetor, tamanhoVetor, rangeNumeros);
+    preenchedorVetor(vetor, tamanhoVetor, rangeNumeros);
     
     executorFuncoes(pBubble, vetor, tamanhoVetor, "BubbleSort");
 
-    preencimentoVetor(vetor, tamanhoVetor, rangeNumeros);
+    preenchedorVetor(vetor, tamanhoVetor, rangeNumeros);
 
-    executorFuncoes(pInsertion, vetor, tamanhoVetor, "Insertion Sort");
+    executorFuncoes(pInsertion, vetor, tamanhoVetor, "InsertionSort");
 
-    preencimentoVetor(vetor, tamanhoVetor, rangeNumeros);
+    preenchedorVetor(vetor, tamanhoVetor, rangeNumeros);
 
-    executorFuncoes(pSelection, vetor, tamanhoVetor, "Selection Sort");
+    executorFuncoes(pSelection, vetor, tamanhoVetor, "SelectionSort");
 
     return 0;
 }
