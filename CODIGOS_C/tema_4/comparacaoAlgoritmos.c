@@ -83,16 +83,19 @@ int main(int argc, char const *argv[]){
         printf("Digite um número inteiro somente!!\n");
         return -1;
     }
-    int cont = 0;
-    for (int i = 0; i < strlen(argv[1]); i++){
-        if (isdigit(argv[1][i])){
-            cont++;
+    else{
+        int cont = 0;
+        for (int i = 0; i < strlen(argv[1]); i++){
+            if (isdigit(argv[1][i])){
+                cont++;
+            }
+        }
+        if (strlen(argv[1]) != cont){
+            printf("Digite um número inteiro somente!!\n");
+            return -1;
         }
     }
-    if (strlen(argv[1]) != cont){
-        printf("Digite um número inteiro somente!!\n");
-        return -1;
-    }
+    
     printf("**** Comparador de Algoritmos de Ordenação ****\n\n");
     
     void (*pBubble)(int*, int) = &bubbleSort;
