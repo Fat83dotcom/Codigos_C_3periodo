@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
+#include <string.h>
 
 typedef struct Temporizador{
     clock_t inicio;
@@ -77,11 +79,26 @@ void executorFuncao(void funcao(int*, int), int *vetor, int tamanhoVetor, char *
 
 
 int main(int argc, char const *argv[]){
+    if (argc != 2){
+        printf("Digite um número inteiro somente!!\n");
+        return -1;
+    }
+    int cont = 0;
+    for (int i = 0; i < strlen(argv[1]); i++){
+        if (isdigit(argv[1][i])){
+            cont++;
+        }
+    }
+    if (strlen(argv[1]) != cont){
+        printf("Digite um número inteiro somente!!\n");
+        return -1;
+    }
+    printf("**** Comparador de Algoritmos de Ordenação ****\n\n");
     
     void (*pBubble)(int*, int) = &bubbleSort;
     void (*pInsertion)(int*, int) = &insertionSort;
     void (*pSelection)(int*, int) = &selectionSort;
-    const unsigned long tamanhoVetor = 1000000;
+    unsigned long tamanhoVetor = (unsigned long)atoi(argv[1]);
     int vetor[tamanhoVetor], rangeNumeros = 100000;
 
     printf("O vetor contém %ld elementos aleatórios.\n", tamanhoVetor);
