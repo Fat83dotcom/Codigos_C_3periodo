@@ -100,23 +100,25 @@ int main(int argc, char const *argv[]){
     void (*pBubble)(int*, unsigned long int) = &bubbleSort;
     void (*pInsertion)(int*, unsigned long int) = &insertionSort;
     void (*pSelection)(int*, unsigned long int) = &selectionSort;
-    unsigned long int tamanhoVetor = (unsigned long int)atoi(argv[1]);
-    int *vetor = (int*) malloc(tamanhoVetor * sizeof(int));
+    unsigned long int qtdElementos = (unsigned long int)atoi(argv[1]);
+    unsigned long int tamanhoMemoriaAlocada = qtdElementos * sizeof(int);
+    int *vetor = (int*) malloc(tamanhoMemoriaAlocada);
     unsigned long int rangeNumeros = RAND_MAX;
 
-    printf("O vetor contém %ld elementos aleatórios.\n", tamanhoVetor);
+    printf("A memória alocada contém %ld elementos aleatórios, "
+            "ocupando %f Megabytes de espaço.\n", qtdElementos, (tamanhoMemoriaAlocada / 10E+5));
 
-    preenchedorVetor(vetor, tamanhoVetor, rangeNumeros);
+    preenchedorVetor(vetor, qtdElementos, rangeNumeros);
     
-    executorFuncao(pBubble, vetor, tamanhoVetor, "BubbleSort");
+    executorFuncao(pBubble, vetor, qtdElementos, "BubbleSort");
 
-    preenchedorVetor(vetor, tamanhoVetor, rangeNumeros);
+    preenchedorVetor(vetor, qtdElementos, rangeNumeros);
 
-    executorFuncao(pInsertion, vetor, tamanhoVetor, "InsertionSort");
+    executorFuncao(pInsertion, vetor, qtdElementos, "InsertionSort");
 
-    preenchedorVetor(vetor, tamanhoVetor, rangeNumeros);
+    preenchedorVetor(vetor, qtdElementos, rangeNumeros);
 
-    executorFuncao(pSelection, vetor, tamanhoVetor, "SelectionSort");
+    executorFuncao(pSelection, vetor, qtdElementos, "SelectionSort");
 
     free(vetor);
 
