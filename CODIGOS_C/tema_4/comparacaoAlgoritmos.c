@@ -9,8 +9,9 @@ typedef struct Temporizador{
     clock_t fim;
 }Temporizador;
 
-void bubbleSort(int *vetor, int tamanhoVetor){
-    int i, j, aux;
+void bubbleSort(int *vetor, unsigned long int tamanhoVetor){
+    unsigned long i, j;
+    int aux;
     for (i = tamanhoVetor - 1; i > 0; i--){
         for (j = 0; j < i; j++){
             if (vetor[j] > vetor[j + 1]){
@@ -22,9 +23,10 @@ void bubbleSort(int *vetor, int tamanhoVetor){
     }
 }
 
-void insertionSort(int *vetor, int tamanhoVetor){
-    int i, j, chave;
-    for ( j = 1; j < tamanhoVetor; j++){
+void insertionSort(int *vetor, unsigned long int tamanhoVetor){
+    unsigned long i, j;
+    int chave;
+    for (j = 1; j < tamanhoVetor; j++){
         chave = vetor[j];
         i = j - 1;
         while (i >= 0 && vetor[i] > chave){
@@ -35,22 +37,19 @@ void insertionSort(int *vetor, int tamanhoVetor){
     }
 }
 
-void selectionSort(int *vetor, int tamanhoVetor){
-    int i,j,aux, minimo, pos_minimo;
-    for (i=0; i < tamanhoVetor - 1; i++)
-    {
+void selectionSort(int *vetor, unsigned long int tamanhoVetor){
+    unsigned long i,j;
+    int aux, minimo, pos_minimo;
+    for (i=0; i < tamanhoVetor - 1; i++){
         minimo = vetor[i];
         pos_minimo = i;
-        for (j = i + 1; j < tamanhoVetor; j++) // Passo 1 
-        {
-            if (minimo > vetor[j])
-            {
+        for (j = i + 1; j < tamanhoVetor; j++){
+            if (minimo > vetor[j]){
                 minimo = vetor[j];
                 pos_minimo = j;
             }
         }
-        if (pos_minimo != i)  // Passo 2
-        {
+        if (pos_minimo != i){
             aux = vetor[pos_minimo];
             vetor[pos_minimo] = vetor[i];
             vetor[i] = aux;
@@ -58,18 +57,18 @@ void selectionSort(int *vetor, int tamanhoVetor){
     }
 }
 
-void preenchedorVetor(int *vetor, int tamanhoVetor, int rangeDosNumeros){
+void preenchedorVetor(int *vetor, unsigned long int tamanhoVetor, unsigned long int rangeDosNumeros){
     Temporizador vet;
     srand(time(NULL));
     vet.inicio = clock();
-    for (unsigned long i = 0; i < tamanhoVetor; i++){
+    for (unsigned long int i = 0; i < tamanhoVetor; i++){
         vetor[i] = rand() % rangeDosNumeros;
     }
     vet.fim = clock();
     printf("O preenchimento de vetor durou %.5f segundos.\n", ((double)(vet.fim - vet.inicio)) / CLOCKS_PER_SEC);
 }
 
-void executorFuncao(void funcao(int*, int), int *vetor, int tamanhoVetor, char *nomeFuncao){
+void executorFuncao(void funcao(int*, unsigned long int), int *vetor, unsigned long int tamanhoVetor, char *nomeFuncao){
     Temporizador temp;
     temp.inicio = clock();
     funcao(vetor, tamanhoVetor);
@@ -98,11 +97,12 @@ int main(int argc, char const *argv[]){
     
     printf("**** Comparador de Algoritmos de Ordenação ****\n\n");
     
-    void (*pBubble)(int*, int) = &bubbleSort;
-    void (*pInsertion)(int*, int) = &insertionSort;
-    void (*pSelection)(int*, int) = &selectionSort;
-    unsigned long tamanhoVetor = (unsigned long)atoi(argv[1]);
-    int vetor[tamanhoVetor], rangeNumeros = 100000;
+    void (*pBubble)(int*, unsigned long int) = &bubbleSort;
+    void (*pInsertion)(int*, unsigned long int) = &insertionSort;
+    void (*pSelection)(int*, unsigned long int) = &selectionSort;
+    unsigned long int tamanhoVetor = (unsigned long int)atoi(argv[1]);
+    int *vetor = (int*) malloc(tamanhoVetor * sizeof(int));
+    unsigned long int rangeNumeros = RAND_MAX;
 
     printf("O vetor contém %ld elementos aleatórios.\n", tamanhoVetor);
 
@@ -117,6 +117,8 @@ int main(int argc, char const *argv[]){
     preenchedorVetor(vetor, tamanhoVetor, rangeNumeros);
 
     executorFuncao(pSelection, vetor, tamanhoVetor, "SelectionSort");
+
+    free(vetor);
 
     return 0;
 }
