@@ -68,10 +68,70 @@ void exibirArvore(Pont raiz){
     }
 }
 
+/*Busca binária não recursiva*/
+Pont buscaNode(Pont raiz, TIPOCHAVE chave, Pont *pai){
+    Pont atual = raiz;
+    *pai = NULL;
+    while (atual){
+        if (atual->chave == chave){
+            return(atual);
+        }
+        *pai = atual;
+        if (chave < atual->chave){
+            atual = atual->esquerda;
+        }
+        else{
+            atual = atual->direita;
+        }
+    }
+    return(NULL);
+}
+
+Pont removerNode(Pont raiz, TIPOCHAVE chave){
+    Pont pai, node, p, q;
+    node = buscaNode(raiz, chave, &pai);
+    if (node == NULL){
+        return(raiz);
+    }
+    if (!node->esquerda || !node->direita){
+        if (!node->esquerda){
+            q = node->direita;
+        }
+        else{
+            q = node->esquerda;
+        }
+    }
+    else{
+        p = node;
+        q = node->esquerda;
+        while (q->direita){
+            p = q;
+            q = q->direita;
+        }
+        if (p != node){
+            p->direita = q->esquerda;
+            q->esquerda = node->esquerda;
+        }
+        q->direita = node->direita;
+    }
+    if (!pai){
+        free(node);
+        return(q);
+    }
+    if (chave < pai->chave){
+        pai->esquerda = q;
+    }
+    else{
+        pai->direita = q;
+        free(node);
+        return(raiz);
+    }
+}
+
 int main(int argc, char const *argv[]){
     srand(time(NULL));
     int qtdNodes, randomen, randd;
-    qtdNodes = randomen = 20000;
+    qtdNodes = randomen = 2500000;
     Pont raiz = inicializar();
     Pont no = criarNo((qtdNodes / 2));
     raiz = adicionar(raiz, no);
@@ -80,9 +140,10 @@ int main(int argc, char const *argv[]){
         raiz = adicionadorNode(randd, raiz);
     }
     
-    printf("%d\n", contadorNodes(raiz));
+    printf("%d\n", contadorNodes(raiz) - 1);
     exibirArvore(raiz);
-    Pont p = contem(raiz, 15);
+    Pont p = contem(raiz, 2499999);
     printf("%p\n", p);
+    free(raiz);
     return 0;
 }
