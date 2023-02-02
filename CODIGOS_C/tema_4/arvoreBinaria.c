@@ -88,41 +88,41 @@ Pont buscaNode(Pont raiz, TIPOCHAVE chave, Pont *pai){
 }
 
 Pont removerNode(Pont raiz, TIPOCHAVE chave){
-    Pont pai, node, p, q;
+    Pont pai, node, p, f;
     node = buscaNode(raiz, chave, &pai);
     if (node == NULL){
         return(raiz);
     }
     if (!node->esquerda || !node->direita){
         if (!node->esquerda){
-            q = node->direita;
+            f = node->direita;
         }
         else{
-            q = node->esquerda;
+            f = node->esquerda;
         }
     }
     else{
         p = node;
-        q = node->esquerda;
-        while (q->direita){
-            p = q;
-            q = q->direita;
+        f = node->esquerda;
+        while (f->direita){
+            p = f;
+            f = f->direita;
         }
         if (p != node){
-            p->direita = q->esquerda;
-            q->esquerda = node->esquerda;
+            p->direita = f->esquerda;
+            f->esquerda = node->esquerda;
         }
-        q->direita = node->direita;
+        f->direita = node->direita;
     }
     if (!pai){
         free(node);
-        return(q);
+        return(f);
     }
     if (chave < pai->chave){
-        pai->esquerda = q;
+        pai->esquerda = f;
     }
     else{
-        pai->direita = q;
+        pai->direita = f;
         free(node);
         return(raiz);
     }
@@ -131,7 +131,7 @@ Pont removerNode(Pont raiz, TIPOCHAVE chave){
 int main(int argc, char const *argv[]){
     srand(time(NULL));
     int qtdNodes, randomen, randd;
-    qtdNodes = randomen = 2500000;
+    qtdNodes = randomen = 100;
     Pont raiz = inicializar();
     Pont no = criarNo((qtdNodes / 2));
     raiz = adicionar(raiz, no);
@@ -144,6 +144,8 @@ int main(int argc, char const *argv[]){
     exibirArvore(raiz);
     Pont p = contem(raiz, 2499999);
     printf("%p\n", p);
+    raiz = removerNode(raiz, 20);
+    exibirArvore(raiz);
     free(raiz);
     return 0;
 }
