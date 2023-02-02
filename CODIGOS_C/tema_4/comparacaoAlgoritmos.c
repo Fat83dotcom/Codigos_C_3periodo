@@ -102,7 +102,7 @@ int main(int argc, char const *argv[]){
     void (*pSelection)(int*, unsigned long int) = &selectionSort;
     unsigned long int qtdElementos = (unsigned long int)atoi(argv[1]);
     unsigned long int tamanhoMemoriaAlocada = qtdElementos * sizeof(int);
-    int *vetor = (int*) malloc(tamanhoMemoriaAlocada);
+    int *vetor = (int*) calloc(tamanhoMemoriaAlocada, sizeof(int));
     unsigned long int rangeNumeros = RAND_MAX;
 
     printf("A memória alocada contém %ld elementos aleatórios, "
