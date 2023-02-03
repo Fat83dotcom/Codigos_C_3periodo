@@ -10,10 +10,11 @@ typedef int TIPOCHAVE;
 
 typedef struct Aux{
     TIPOCHAVE chave;
-    struct Aux *esquerda;
-    struct Aux *direita;
+    struct Aux *esquerda,*direita;
     int h;
-}Node, *Pont;
+}Node;
+
+typedef Node *Pont;
 
 Pont criarNode(TIPOCHAVE chave){
     Pont newNode = (Pont) malloc(1 * sizeof(Node));
@@ -81,7 +82,7 @@ Pont inserirNode(Pont raiz, TIPOCHAVE chave){
     if (chave < raiz->chave){
         raiz->esquerda = inserirNode(raiz->esquerda, chave);
         if ((altura(raiz->esquerda) - altura(raiz->direita)) == 2){
-            if (chave < raiz->esquerda->chave){
+             if (chave < raiz->esquerda->chave){
                 raiz = rotacionaDireita(raiz);
             }
             else{
@@ -130,9 +131,9 @@ int contadorNodes(Pont raiz){
 
 int main(int argc, char const *argv[]){
     srand(time(NULL));
-    Pont raiz = inicializar(), no;
+    Pont raiz = inicializar();
     int tamanhoArvore, rangeRand, cont, chave;
-    tamanhoArvore = rangeRand = 100000;
+    tamanhoArvore = rangeRand = 40;
     
     cont = 0;
     while (cont < (tamanhoArvore)){
@@ -144,6 +145,8 @@ int main(int argc, char const *argv[]){
     }
     
     exibirArvore(raiz);
+    printf("%d\n", contadorNodes(raiz));
+    printf("%p\n", contem(raiz, 35));
 
     return 0;
 }
